@@ -11,7 +11,6 @@ For now only the Tcp connection is implemented
 For now only the REQ_UD2 → RSP_UD Request/Respond Procedure with Variable Data Structure is implemented.
 
 ## Methods
-<<<<<<< HEAD
 **MbusTcpMaster.__init__:**   
 <code>
 <ins>usage:</ins> result = MbusTcpMaster(host, port, [name, auto_connect])  
@@ -25,20 +24,7 @@ name: Name for this instance (str:'')
 auto_connect: Connect after initialization (bool:True)  
   
 <ins>returns:</ins>  Initialized connection    
-=======
-**MbusTcpMaster.__init__:** 
-<code>
-result = MbusTcpMaster(host, port, [name, auto_connect])  
-<ins>args:</ins>  
-	host:		IP address of TCP/Mbus bridge  
-	port:           Port  
-<ins>kwargs:</ins>  
-        name:           (str:'')        Name for this instance  
-        auto_connect:   (bool:True)     Connect after initialization ()  
-<ins>returns:</ins>   
-	Initialized connection  
->>>>>>> fea83fff708c58a4a860455068a90d388909798e
-</code>
+
 
 **scan_slaves_primary:**  
 <code>
