@@ -22,6 +22,9 @@ For now only the REQ_UD2 → RSP_UD Request/Respond Procedure with Variable Data
         auto_connect:   (bool:True)     Connect after initialization ()  
 <ins>returns:</ins>   
         Initialized connection  
+</code>
+
+<code>
         
 **scan_slaves_primary:**  
         slaves = test.scan_slaves_primary([scan_timeout, stop_at])  
@@ -31,7 +34,9 @@ For now only the REQ_UD2 → RSP_UD Request/Respond Procedure with Variable Data
 <ins>returns:</ins>   
         A dictionary with Fixed Data Headers (FDH's) part of the response of the detected slaves, keyed on their primary addresses.  
         An FDH contains: Ident. Nr. Manufr. Version Medium AccessNo. Status Signature  
-  
+</code>
+
+<code>
 **get_all_fields:**  
         result = test.get_all_fields(slave_address, [extensive_mode, scale_results])  
 <ins>args:</ins>  
@@ -43,7 +48,7 @@ For now only the REQ_UD2 → RSP_UD Request/Respond Procedure with Variable Data
         All fields/registers from 1 specific slave address. (only VARIABLE DATA STRUCTURE is supported at this moment)  
         returns a dictionary with the FDH information of this slave and a 'fields' key  
         The 'fields' key contains a list of dictionaries (1 per decoded field/register) with: Description, Value, Unit  
-</code>        
+</code>
 
 ## How to use
 Using the MbusTcpMaster the 'look' and 'feel' should be similar to using the ModbusTcpClient from the pymodbus package
