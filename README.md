@@ -13,7 +13,7 @@ For now only the REQ_UD2 → RSP_UD Request/Respond Procedure with Variable Data
 ## Methods
 **MbusTcpMaster.__init__:**  
         result = MbusTcpMaster(host, port, [name, auto_connect])  
-args:  
+<ins>args:</ins>  
         host:           IP address of TCP/Mbus bridge  
         port:           Port  
 kwargs:  
