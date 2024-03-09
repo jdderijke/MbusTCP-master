@@ -11,8 +11,8 @@ For now only the Tcp connection is implemented
 For now only the REQ_UD2 → RSP_UD Request/Respond Procedure with Variable Data Structure is implemented.
 
 ## Methods
-<code>
 **MbusTcpMaster.__init__:**  
+<code>
         result = MbusTcpMaster(host, port, [name, auto_connect])  
 <ins>args:</ins>  
         host:           IP address of TCP/Mbus bridge  
@@ -24,9 +24,8 @@ For now only the REQ_UD2 → RSP_UD Request/Respond Procedure with Variable Data
         Initialized connection  
 </code>
 
-<code>
-        
 **scan_slaves_primary:**  
+<code>
         slaves = test.scan_slaves_primary([scan_timeout, stop_at])  
 <ins>kwargs:</ins>  
         scan_timeout:   (float:1.0)     How long to wait for response from an address  
@@ -36,8 +35,8 @@ For now only the REQ_UD2 → RSP_UD Request/Respond Procedure with Variable Data
         An FDH contains: Ident. Nr. Manufr. Version Medium AccessNo. Status Signature  
 </code>
 
-<code>
 **get_all_fields:**  
+<code>
         result = test.get_all_fields(slave_address, [extensive_mode, scale_results])  
 <ins>args:</ins>  
         slave_address:  (int:1)         slave address to send request to  
