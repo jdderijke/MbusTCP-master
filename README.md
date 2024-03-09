@@ -26,29 +26,36 @@ auto_connect: Connect after initialization (bool:True)
 <ins>returns:</ins>  Initialized connection    
 </code>
 
+
+
 **scan_slaves_primary:**  
 <code>
-	slaves = test.scan_slaves_primary([scan_timeout, stop_at])  
+<ins>usage:</ins> slaves = test.scan_slaves_primary([scan_timeout, stop_at])  
+ 
 <ins>kwargs:</ins>  
-	scan_timeout:	(float:1.0)	How long to wait for response from an address  
-	stop_at:	(int:250)	Quit looking for more slaves after this number of detected slaves  
+scan_timeout: How long to wait for response from an address (float:1.0)	 
+stop_at: Quit looking for more slaves after this number of detected slaves (int:250)  
+
 <ins>returns:</ins>   
-	A dictionary with Fixed Data Headers (FDH's) part of the response of the detected slaves, keyed on their primary addresses.  
-	An FDH contains: Ident. Nr. Manufr. Version Medium AccessNo. Status Signature  
+A dictionary with Fixed Data Headers (FDH's) part of the response of the detected slaves, keyed on their primary addresses.  
+An FDH contains: Ident. Nr. Manufr. Version Medium AccessNo. Status Signature  
 </code>
 
 **get_all_fields:**  
 <code>
-        result = test.get_all_fields(slave_address, [extensive_mode, scale_results])  
+<ins>usage:</ins> result = test.get_all_fields(slave_address, [extensive_mode, scale_results])  
+
 <ins>args:</ins>  
-        slave_address:  (int:1)         slave address to send request to  
+slave_address: slave address to send request to (int:1)  
+
 <ins>kwargs:</ins>  
-        extensive_mode: (bool:False)    generate extra field information in the 'fields' part of the result  
-        scale_results:  (bool:True)     Return scaled values  
+extensive_mode: generate extra field information in the 'fields' part of the result (bool:False)  
+scale_results: Return scaled values (bool:True)  
+
 <ins>returns:</ins>  
-        All fields/registers from 1 specific slave address. (only VARIABLE DATA STRUCTURE is supported at this moment)  
-        returns a dictionary with the FDH information of this slave and a 'fields' key  
-        The 'fields' key contains a list of dictionaries (1 per decoded field/register) with: Description, Value, Unit  
+All fields/registers from 1 specific slave address. (only VARIABLE DATA STRUCTURE is supported at this moment)  
+returns a dictionary with the FDH information of this slave and a 'fields' key  
+The 'fields' key contains a list of dictionaries (1 per decoded field/register) with: Description, Value, Unit  
 </code>
 
 ## How to use
