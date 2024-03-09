@@ -11,28 +11,28 @@ For now only the Tcp connection is implemented
 For now only the REQ_UD2 → RSP_UD Request/Respond Procedure with Variable Data Structure is implemented.
 
 ## Methods
-**MbusTcpMaster.__init__:**  
+**MbusTcpMaster.__init__:** 
 <code>
-        result = MbusTcpMaster(host, port, [name, auto_connect])  
+result = MbusTcpMaster(host, port, [name, auto_connect])  
 <ins>args:</ins>  
-        host:           IP address of TCP/Mbus bridge  
-        port:           Port  
+	host:		IP address of TCP/Mbus bridge  
+	port:           Port  
 <ins>kwargs:</ins>  
         name:           (str:'')        Name for this instance  
         auto_connect:   (bool:True)     Connect after initialization ()  
 <ins>returns:</ins>   
-        Initialized connection  
+	Initialized connection  
 </code>
 
 **scan_slaves_primary:**  
 <code>
-        slaves = test.scan_slaves_primary([scan_timeout, stop_at])  
+	slaves = test.scan_slaves_primary([scan_timeout, stop_at])  
 <ins>kwargs:</ins>  
-        scan_timeout:   (float:1.0)     How long to wait for response from an address  
-        stop_at:        (int:250)       Quit looking for more slaves after this number of detected slaves  
+	scan_timeout:	(float:1.0)	How long to wait for response from an address  
+	stop_at:	(int:250)	Quit looking for more slaves after this number of detected slaves  
 <ins>returns:</ins>   
-        A dictionary with Fixed Data Headers (FDH's) part of the response of the detected slaves, keyed on their primary addresses.  
-        An FDH contains: Ident. Nr. Manufr. Version Medium AccessNo. Status Signature  
+	A dictionary with Fixed Data Headers (FDH's) part of the response of the detected slaves, keyed on their primary addresses.  
+	An FDH contains: Ident. Nr. Manufr. Version Medium AccessNo. Status Signature  
 </code>
 
 **get_all_fields:**  
