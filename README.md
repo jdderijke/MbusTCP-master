@@ -11,38 +11,39 @@ For now only the Tcp connection is implemented
 For now only the REQ_UD2 → RSP_UD Request/Respond Procedure with Variable Data Structure is implemented.
 
 ## Methods
+<code>
 **MbusTcpMaster.__init__:**  
         result = MbusTcpMaster(host, port, [name, auto_connect])  
 <ins>args:</ins>  
         host:           IP address of TCP/Mbus bridge  
         port:           Port  
-kwargs:  
+<ins>kwargs:</ins>  
         name:           (str:'')        Name for this instance  
         auto_connect:   (bool:True)     Connect after initialization ()  
-returns:  
+<ins>returns:</ins>   
         Initialized connection  
         
 **scan_slaves_primary:**  
         slaves = test.scan_slaves_primary([scan_timeout, stop_at])  
-kwargs:  
+<ins>kwargs:</ins>  
         scan_timeout:   (float:1.0)     How long to wait for response from an address  
         stop_at:        (int:250)       Quit looking for more slaves after this number of detected slaves  
-returns:  
+<ins>returns:</ins>   
         A dictionary with Fixed Data Headers (FDH's) part of the response of the detected slaves, keyed on their primary addresses.  
         An FDH contains: Ident. Nr. Manufr. Version Medium AccessNo. Status Signature  
   
 **get_all_fields:**  
         result = test.get_all_fields(slave_address, [extensive_mode, scale_results])  
-args:  
+<ins>args:</ins>  
         slave_address:  (int:1)         slave address to send request to  
-kwargs:  
+<ins>kwargs:</ins>  
         extensive_mode: (bool:False)    generate extra field information in the 'fields' part of the result  
         scale_results:  (bool:True)     Return scaled values  
-returns:  
+<ins>returns:</ins>  
         All fields/registers from 1 specific slave address. (only VARIABLE DATA STRUCTURE is supported at this moment)  
         returns a dictionary with the FDH information of this slave and a 'fields' key  
         The 'fields' key contains a list of dictionaries (1 per decoded field/register) with: Description, Value, Unit  
-        
+</code>        
 
 ## How to use
 Using the MbusTcpMaster the 'look' and 'feel' should be similar to using the ModbusTcpClient from the pymodbus package
