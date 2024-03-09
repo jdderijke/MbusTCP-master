@@ -63,7 +63,7 @@ Using the MbusTcpMaster the 'look' and 'feel' should be similar to using the Mod
 
 Example:
 
-<code>
+```
 from MbusTcpMaster import MbusTcpMaster
 
 
@@ -85,6 +85,6 @@ if slaves:
 
 # close the connection
 test.close()
-</code>
 
+```
 
