@@ -14,14 +14,17 @@ For now only the REQ_UD2 → RSP_UD Request/Respond Procedure with Variable Data
 **MbusTcpMaster.__init__:**   
 <code>
 <ins>usage:</ins> result = MbusTcpMaster(host, port, [name, auto_connect])  
+
 <ins>args:</ins>  
 host: IP address of TCP/Mbus bridge  
 port: Port 
+
 <ins>kwargs:</ins>  
 name: Name for this instance (str:'')  
 auto_connect: Connect after initialization (bool:True)  
-<ins>returns:</ins>  Initialized connection    
 
+<ins>returns:</ins>  Initialized connection    
+</code>
 
 **scan_slaves_primary:**  
 <code>
