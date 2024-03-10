@@ -56,10 +56,11 @@ scale_results: Return scaled values (bool:True)
 All fields/registers from 1 specific slave address. (only VARIABLE DATA STRUCTURE is supported at this moment)  
 returns a dictionary with the FDH information of this slave and a 'fields' key  
 
-In extensive_mode the full Variable Data STructure (VDS) is added in the reponse field  
+In extensive_mode the full Variable Data STructure (VDS) is added in the reponse field as a bytearray  
 
 In default mode the 'fields' key contains a list of dictionaries (1 per decoded field/register) with: Description, Value, Unit 
 Descr consists of: function_descr storage_nr:tariff in order to distinguish between the different variations of the same description  
+Example: Act_Energy 0:0  
 
 In extensive_mode The following extra information is added per field:  
 function: Min, Max, Actual or Error type of value  
@@ -68,7 +69,7 @@ tariff:
 orig_value: Value before scaling  
 scaling: Scaling factor 
 DR_startindex: Startindex of this  Data Record in the Variable Data Structure part of the response 
-DR: The actual, undecoded, Data Record (Data Record Header + Data) 
+DR: The actual, undecoded, Data Record (Data Record Header + Data) as a bytearray  
 decoder: The used decoder   
 
 Using extensive_mode one could decide to decode and scale the data outside of the MbusTcpMaster.
@@ -82,22 +83,26 @@ Example:
 ```
 from MbusTcpMaster import MbusTcpMaster
 
-
 # Create an instance of the MbusTcpMaster (replace ip_address and port with the appropriate values)
-test = MbusTcpMaster(host='ip_address', port=port)
+test = MbusTcpMaster(host='192.168.178.204', port=10001)
 
-# get all slaves on the bus (this may take a while to scan... so we limit the maximum to 2)
+# get all slaves on the bus (this may take a while to scan...)
 slaves = test.scan_slaves_primary(stop_at=2)
 
 if slaves:
-    for slave_address in slaves:
-        # get all the fields/registers from the slave
-        results = test.get_all_fields(slave_address=slave_address)
-        
-        for field in results['fields']:
-            print(' '.join(f'{j}' for i,j in field.items()))
-            
-        print()
+	for slave_address in slaves:
+		# get all the fields/registers from the slave
+		results = test.get_all_fields(slave_address=slave_address, extensive_mode=True)
+		
+		for i,j in results.items():
+			if i=='fields': continue
+			print(f'{i}:{j}')
+			
+			
+		for field in results['fields']:
+			print(' '.join(f'{i}:{j}' for i,j in field.items()))
+			
+		print()
 
 # close the connection
 test.close()
