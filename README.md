@@ -38,7 +38,7 @@ stop_at: Quit looking for more slaves after this number of detected slaves (int:
 
 <ins>returns:</ins>   
 A dictionary with Fixed Data Headers (FDH's) part of the response of the detected slaves, keyed on their primary addresses.  
-An FDH contains: Ident. Nr. Manufr. Version Medium AccessNo. Status Signature  
+An FDH contains: IdentificationNo. Manufr. Version Medium AccessNo. Status Signature  
 </code>
 
 **get_all_fields:**  
@@ -55,7 +55,19 @@ scale_results: Return scaled values (bool:True)
 <ins>returns:</ins>  
 All fields/registers from 1 specific slave address. (only VARIABLE DATA STRUCTURE is supported at this moment)  
 returns a dictionary with the FDH information of this slave and a 'fields' key  
-The 'fields' key contains a list of dictionaries (1 per decoded field/register) with: Description, Value, Unit  
+In extensive_mode the full Variable Data STructure (VDS) is added in the reponse field
+In default mode the 'fields' key contains a list of dictionaries (1 per decoded field/register) with: Description, Value, Unit 
+In extensive_mode The following extra information is added per field:  
+function: Min, Max, Actual or Error type of value  
+storage:  
+tariff:   
+orig_value: Value before scaling  
+scaling: Scaling factor 
+DR_startindex: Startindex of this  Data Record in the Variable Data Structure part of the response 
+DR: The actual, undecoded, Data Record (Data Record Header + Data) 
+decoder: The used decoder   
+
+Using extensive_mode one could decide to decode and scale the data outside of the MbusTcpMaster.
 </code>
 
 ## How to use

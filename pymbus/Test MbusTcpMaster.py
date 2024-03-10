@@ -44,46 +44,6 @@ def main(args):
 	# close the connection
 	test.close()
 	
-	
-	
-	
-	
-	# test = MbusTcpMaster(host='192.168.178.204', port=10001, extensive_mode=False, scale_results=True, name='Vermogensmeters Twentseweg')
-	
-	# slaves = test.scan_slaves_primary()
-	# print(slaves)
-	# input('any')
-	
-	# results = test.ud2_rsupd(slave_address=0x01)
-	
-	
-	# print('fixed header:------------------------------')
-	# for key in results:
-		# if key=='fields': continue
-		# print(key, results[key])
-	# print('fields:------------------------------------')
-	# for field in results['fields']:
-		# if test.extensive_mode:
-			# print(' '.join(f'{i}:{j}' for i,j in field.items()))
-		# else:
-			# print(' '.join(f'{j}' for i,j in field.items()))
-
-	# print()
-	# print()
-	
-	# results = test.ud2_rsupd(slave_address=0x02)
-	# print('fixed header:------------------------------')
-	# for key in results:
-		# if key=='fields': continue
-		# print(key, results[key])
-	# print('fields:------------------------------------')
-	# for field in results['fields']:
-		# if test.extensive_mode:
-			# print(' '.join(f'{i}:{j}' for i,j in field.items()))
-		# else:
-			# print(' '.join(f'{j}' for i,j in field.items()))
-		
-	# return 0
 
 if __name__ == '__main__':
 	import sys

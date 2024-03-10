@@ -358,13 +358,15 @@ class MbusSpecific(object):
 
 	def scan_slaves_primary(self, **kwargs):
 		""" 
-		slaves = test.scan_slaves_primary([scan_timeout, stop_at])
+		usage: slaves = test.scan_slaves_primary([scan_timeout, stop_at])
+		
 		kwargs:
-				scan_timeout:	(float:1.0)		How long to wait for response from an address
-				stop_at:		(int:250)		Quit looking for more slaves after this number of detected slaves
+		scan_timeout: How long to wait for response from an address (float:1.0)
+		stop_at: Quit looking for more slaves after this number of detected slaves (int:250)
+		
 		returns:
-				A dictionary with Fixed Data Headers (FDH's) part of the response of the detected slaves, keyed on their primary addresses.
-				An FDH contains: Ident. Nr. Manufr. Version Medium AccessNo. Status Signature
+		A dictionary with Fixed Data Headers (FDH's) part of the response of the detected slaves, keyed on their primary addresses.
+		An FDH contains: Ident. Nr. Manufr. Version Medium AccessNo. Status Signature
 		"""
 		try:
 			if not self.is_connected(): raise Exception('Not connected')
@@ -378,7 +380,7 @@ class MbusSpecific(object):
 					_logger.info(f'Found device on address {format(addr, "02x")}, ID:{results["identification"]}, manuf:{results["manufacturer"]}, version:{results["version"]}, medium:{results["medium"]}')
 					if len(scan_results) >= kwargs.get('stop_at', 250): return scan_results
 				except socket.timeout as err:
-					_logger.info(f'No slave detected on address {format(addr, "02x")}, err:{err}')
+					_logger.debug(f'No slave detected on address {format(addr, "02x")}, err:{err}')
 			return scan_results
 			self.TCPclientSock.settimeout(self.timeout)
 		except Exception as err:
@@ -387,16 +389,18 @@ class MbusSpecific(object):
 		
 	def get_all_fields(self, slave_address, **kwargs):
 		'''
-		result = test.get_all_fields(slave_address, [extensive_mode, scale_results])
+		usage: result = test.get_all_fields(slave_address, [extensive_mode, scale_results])
 		args:
-				slave_address:	(int:1)			slave address to send request to
+		slave_address: slave address to send request to (int:1)
+		
 		kwargs:
-				extensive_mode:	(bool:False)	generate extra field information in the 'fields' part of the result
-				scale_results:	(bool:True)		Return scaled values
+		extensive_mode: generate extra field information in the 'fields' part of the result (bool:False)
+		scale_results: Return scaled values (bool:True)
+		
 		returns:
-				All fields/registers from 1 specific slave address. (only VARIABLE DATA STRUCTURE is supported at this moment)
-				returns a dictionary with the FDH information of this slave and a 'fields' key 
-				The 'fields' key contains a list of dictionaries (1 per decoded field/register) with: Description, Value, Unit
+		All fields/registers from 1 specific slave address. (only VARIABLE DATA STRUCTURE is supported at this moment)
+		returns a dictionary with the FDH information of this slave and a 'fields' key 
+		The 'fields' key contains a list of dictionaries (1 per decoded field/register) with: Description, Value, Unit
 		'''
 		try:
 			if not self.is_connected(): raise Exception('Not connected')
@@ -427,6 +431,8 @@ class MbusSpecific(object):
 		'''
 		try:
 			results=dict()
+			if kwargs.get('extensive_mode', False): results['response'] = data_ba
+			
 			# eerste 12 bytes zijn ALTIJD de FIXED DATA HEADER (FDH) 
 			results.update(Decoder.decode_MBUSID(data_ba[:12]))
 			# decode all fields untill no more fields are found
@@ -443,7 +449,7 @@ class MbusSpecific(object):
 				'''
 				Decode the next field from the data_ba byte array
 				'''
-				VDS_start = index
+				DR_start = index
 				dif_info, index = self._VDSdif_decoder(data_ba, index)
 				function, var_length, _, _, storage_nr, tariff = dif_info
 				
@@ -453,16 +459,20 @@ class MbusSpecific(object):
 				data_start = index
 				
 				value = decoder(data_ba[index:index + nr_bytes])
-				
 				_logger.debug(f'decoded databytes on index {index} for {function}_{descr}_{storage_nr}, decoder: {decoder}, result: {value}')
 				index += nr_bytes
 				
 				field = dict(	descr=f'{function}_{descr} {storage_nr}:{tariff}', 
 								value=value*scaling if kwargs.get('scale_results', True) else value, 
 								unit=unit)
-				if kwargs.get('extensive_mode', False): field.update(dict(	scaling=scaling, 
-															data_start=data_start, 
-															vds=data_ba[VDS_start:index], 
+				if kwargs.get('extensive_mode', False): field.update(dict(	
+															function=function,
+															storage=storage_nr,
+															tariff=tariff,
+															orig_value=value
+															scaling=scaling, 
+															DR_startindex=DR_start, 
+															DR=data_ba[VDS_start:index], 
 															decoder=decoder)
 													)
 				results['fields'].append(field)
@@ -479,15 +489,13 @@ class MbusSpecific(object):
 		tariff = 0
 		
 		dif_start = index
-		dif = int(data_ba[index])	# get the first DIF
+		dif = int(data_ba[index])										# get the first DIF
 		index += 1
 		
 		dif_extension = (dif > 0x7F)
 		storage_nr = (dif >> 6) & 0x01									# store the LSB of the storage_nr
 		
-		# print(f'dif = {format(dif, "8b")}, function bits are {format((dif >> 4) & 0x03, "2b")}')
 		function = Function_field((dif >> 4) & 0x03).name
-		# print(function)
 		
 		if (dif & 0x0F) == 0b1101:
 			# In this case the length is given by the first databyte after the DRH (header), so the first real databyte (LVAR)
@@ -587,9 +595,12 @@ class MbusSpecific(object):
 		
 	def _get_value_information(self, table, vif, max_shift=3):
 		'''
-		Retrieved the data definition from a table (dictionary) based on a lookup key
-		First the full lookup is used as kay, if no match is found then the lookup is shifted bitwise right 1 bit and
-		again a match is searched.... etc until lookup has been shifted right by max_shift bits OR a match was found
+		Retrieved the data definition from a dictionary (table) based on a lookup key (vif) in bitwise string representation
+		First the full bitwise string of the lookup key (vif) is used as key, if no match is found then the lookup string is replaced 
+		from the right bit with the letter n and again a match is searched....etc until lookup has been shifted right by max_shift bits OR 
+		a match was found
+		So a vif of '01011100' would be used a key to search for, if no match '0101110n' is used, if still no match '010111nn' is used etc.
+		The found key contains a descr(iption), a scaling and a unit entry. with optionally a decoder entry, these entries are returned
 		'''
 		shift = 0
 		keystr = format(vif, "08b")
@@ -597,12 +608,9 @@ class MbusSpecific(object):
 		data_def = None
 		while not data_def and shift <= max_shift:
 			for teller in range(shift): keystr = keystr[:len(keystr)-shift] + 'n' * shift
-			# print (f'searchkeystr = {keystr}')
-			# input('any key')
 			data_def = table.get(keystr, None) 
 			
 			if not data_def:
-				# print('Not Found!!') 
 				shift +=1
 				
 		if data_def:
