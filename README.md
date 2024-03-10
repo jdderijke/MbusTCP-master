@@ -55,8 +55,12 @@ scale_results: Return scaled values (bool:True)
 <ins>returns:</ins>  
 All fields/registers from 1 specific slave address. (only VARIABLE DATA STRUCTURE is supported at this moment)  
 returns a dictionary with the FDH information of this slave and a 'fields' key  
-In extensive_mode the full Variable Data STructure (VDS) is added in the reponse field
+
+In extensive_mode the full Variable Data STructure (VDS) is added in the reponse field  
+
 In default mode the 'fields' key contains a list of dictionaries (1 per decoded field/register) with: Description, Value, Unit 
+Descr consists of: function_descr storage_nr:tariff in order to distinguish between the different variations of the same description  
+
 In extensive_mode The following extra information is added per field:  
 function: Min, Max, Actual or Error type of value  
 storage:  

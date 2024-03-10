@@ -34,10 +34,14 @@ def main(args):
 	if slaves:
 		for slave_address in slaves:
 			# get all the fields/registers from the slave
-			results = test.get_all_fields(slave_address=slave_address)
-			
+			results = test.get_all_fields(slave_address=slave_address, extensive_mode=True)
+			for i,j in results.items():
+				if i=='fields': continue
+				print(f'{i}:{j}')
+				
+				
 			for field in results['fields']:
-				print(' '.join(f'{j}' for i,j in field.items()))
+				print(' '.join(f'{i}:{j}' for i,j in field.items()))
 				
 			print()
 	

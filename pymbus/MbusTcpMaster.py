@@ -469,15 +469,15 @@ class MbusSpecific(object):
 															function=function,
 															storage=storage_nr,
 															tariff=tariff,
-															orig_value=value
+															orig_value=value,
 															scaling=scaling, 
 															DR_startindex=DR_start, 
-															DR=data_ba[VDS_start:index], 
+															DR=data_ba[DR_start:index], 
 															decoder=decoder)
 													)
 				results['fields'].append(field)
 					
-				_logger.debug(f'VDS was {" ".join(format(x, "02x") for x in data_ba[VDS_start:index])}')
+				_logger.debug(f'DR was {" ".join(format(x, "02x") for x in data_ba[DR_start:index])}')
 				_logger.debug('')
 				_logger.debug('')
 				# print ()
